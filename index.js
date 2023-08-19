@@ -51,7 +51,7 @@ app.use(siteDataRoutes);
       console.log('Connected to Database');
     }
 });
-mongoose.set('useFindAndModify', true);
+// mongoose.set('useFindAndModify', true);
 
 app.listen(8070, () => {
   console.log(`Server is running on port ${port}`);
