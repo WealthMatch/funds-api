@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const Admin = require('../models/Admin');
-const Investment = require('../models/Investment');
+// const Admin = require('../models/Admin');
+// const Investment = require('../models/Investment');
 const secretKey = 'your-secret-key';
 const Withdrawal  =  require('../models/Withdrawal');
 
