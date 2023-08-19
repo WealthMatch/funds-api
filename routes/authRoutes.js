@@ -2,7 +2,7 @@ const express = require('express');
 // const authController = require('../controllers/authControllers');
 // const authMiddleware = require('../midlewares/authMidleware');
 
-const router = express.Router();
+const authRouter = express.Router();
 
 // router.post('/signup', authController.signup);
 
@@ -30,5 +30,5 @@ const router = express.Router();
 
 // router.put('/suspend-user/:userId', authController.suspendUser);
 
-module.exports = router;
+module.exports = authRouter;
 
