@@ -8,13 +8,19 @@ const authRoutes = require('./routes/authRoutes');
 const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 7000;
+// const port = process.env.PORT || 7000;
 
-app.use(cors());
+// app.use(cors());
 
 
 // Middleware
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+
+app.use(cors('*'))
+
+app.use(cors());
+
+app.use(express.json());
 
 // Connect to MongoDB
 
@@ -29,7 +35,7 @@ app.use("/status",(req,res) => {
 // Routes
 // app.use('/auth', authRoutes);
 // app.use('/investment', investmentRoutes);
-app.use('/package', packageRoutes);
+app.use(packageRoutes);
 // app.use('/site-data', siteDataRoutes);
 
 
@@ -47,6 +53,6 @@ app.use('/package', packageRoutes);
 });
 mongoose.set('useFindAndModify', true);
 
-app.listen(port, () => {
+app.listen(8070, () => {
   console.log(`Server is running on port ${port}`);
 });
