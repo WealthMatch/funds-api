@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 // const authRoutes = require('./routes/authRoutes');
 // const investmentRoutes = require('./routes/investmentRoutes');
 // const packageRoutes = require('./routes/packageRoutes');
