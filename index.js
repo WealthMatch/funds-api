@@ -34,10 +34,18 @@ app.use('/package', packageRoutes);
 
 
 // mongodb+srv://root:icui4cumise7@cluster0.3o7ko.mongodb.net/finance
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
+// mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => console.log('Connected to MongoDB'))
+//   .catch(err => console.error('MongoDB connection error:', err));
+  mongoose.connect(process.env.DATABASE_URL, { useUnifiedTopology: true, useNewUrlParser: true,}, (err,res) => {
+    if(err){
+        console.log(err)
+    }
+    else{
+      console.log('Connected to Database');
+    }
+});
+mongoose.set('useFindAndModify', true);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
