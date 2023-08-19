@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const authRoutes = require('./routes/authRoutes');
+// const authRoutes = require('./routes/authRoutes');
 // const investmentRoutes = require('./routes/investmentRoutes');
 const packageRoutes = require('./routes/packageRoutes');
 // const siteDataRoutes = require('./routes/siteDataRoutes');
@@ -33,8 +33,8 @@ app.use("/status",(req,res) => {
 })
 
 // Routes
-// app.use(authRoutes);
-// app.use(investmentRoutes);
+// app.use('/auth', authRoutes);
+// app.use('/investment', investmentRoutes);
 app.use(packageRoutes);
 // app.use('/site-data', siteDataRoutes);
 
