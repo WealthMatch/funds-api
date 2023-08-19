@@ -36,7 +36,7 @@ app.use("/status",(req,res) => {
 // app.use('/auth', authRoutes);
 // app.use('/investment', investmentRoutes);
 app.use(packageRoutes);
-app.use(siteDataRoutes);
+app.use('/site-data', siteDataRoutes);
 
 
 // mongodb+srv://root:icui4cumise7@cluster0.3o7ko.mongodb.net/finance
