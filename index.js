@@ -33,7 +33,7 @@ app.use("/status",(req,res) => {
 })
 
 // Routes
-app.use(authRoutes);
+// app.use(authRoutes);
 // app.use(investmentRoutes);
 app.use(packageRoutes);
 // app.use('/site-data', siteDataRoutes);
