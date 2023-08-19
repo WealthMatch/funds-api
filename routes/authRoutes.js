@@ -4,13 +4,13 @@ const authController = require('../controllers/authControllers');
 
 const router = express.Router();
 
-router.post('/signup', authController.signup);
+// router.post('/signup', authController.signup);
 
-router.post('/signin', authController.signin);
+// router.post('/signin', authController.signin);
 
-router.post('/admin/signup', authController.adminSignup);
+// router.post('/admin/signup', authController.adminSignup);
 
-router.post('/admin/signin', authController.adminSignin);
+// router.post('/admin/signin', authController.adminSignin);
 
 // router.get('/admin/profile', authMiddleware, authController.getAdminProfile);
 
