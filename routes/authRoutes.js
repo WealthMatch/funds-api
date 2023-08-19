@@ -4,15 +4,15 @@ const authController = require('../controllers/authControllers');
 
 const router = express.Router();
 
-// router.post('/signup', authController.signup);
+router.post('/signup', authController.signup);
 
-// router.post('/signin', authController.signin);
+router.post('/signin', authController.signin);
 
-// router.post('/admin/signup', authController.adminSignup);
+router.post('/admin/signup', authController.adminSignup);
 
-// router.post('/admin/signin', authController.adminSignin);
+router.post('/admin/signin', authController.adminSignin);
 
-// router.get('/admin/profile', authMiddleware, authController.getAdminProfile);
+router.get('/admin/profile', authMiddleware, authController.getAdminProfile);
 
 // router.put('/profile-update', authMiddleware, authController.updateUserProfile);
 
@@ -26,9 +26,9 @@ const router = express.Router();
 
 // router.post('/add-payment-info', authMiddleware, authController.addPaymentInfo);
 
-router.get('/get-all-users', authController.getAllUsers);
+// router.get('/get-all-users', authController.getAllUsers);
 
-router.put('/suspend-user/:userId', authController.suspendUser);
+// router.put('/suspend-user/:userId', authController.suspendUser);
 
 module.exports = router;
 
