@@ -18,6 +18,14 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 
+app.get('/', (req, res) => {
+  res.send('Hey API running 🥳')
+})
+
+app.use("/status",(req,res) => {
+  res.send({status: "OK"});
+})
+
 // mongodb+srv://root:icui4cumise7@cluster0.3o7ko.mongodb.net/finance
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
