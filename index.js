@@ -28,8 +28,8 @@ app.use("/status",(req,res) => {
 
 // Routes
 // app.use('/auth', authRoutes);
-app.use('/investment', investmentRoutes);
-// app.use('/package', packageRoutes);
+// app.use('/investment', investmentRoutes);
+app.use('/package', packageRoutes);
 // app.use('/site-data', siteDataRoutes);
 
 
