@@ -1,11 +1,10 @@
 const express = require('express');
 const siteDataController = require('../controllers/siteDataController');
-const authMiddleware = require('../midlewares/authMidleware');
 
 const router = express.Router();
 
 // Create site data
-router.post('/create', authMiddleware, siteDataController.createSiteData);
+router.post('/create', siteDataController.createSiteData);
 
 // Read site data
 router.get('/get', siteDataController.getSiteData);
