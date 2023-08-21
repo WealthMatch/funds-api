@@ -453,7 +453,7 @@ exports.getAdminPendingReceivePayInvestments =  async(req,res) => {
     // Find all pending merges with the IDs from the user's investments
     // const adminPendingSendMerges = await Merge.find({ _id: { $in: mergeIds }, status: 'pending' }).populate('investmentSending').populate('investmentReceiving');
 
-    const adminInvestments = await Investment.find({ user: { $in: adminUserIds }, status: 'awaiting-payment' }).populate({
+    const adminInvestments = await Investment.find({ user: { $in: adminUserIds }, status: {$in: ['awaiting-payment','pending-payment']} }).populate({
       path: 'receiveFrom',
       populate: {
         path: 'investmentSending investmentReceiving',
