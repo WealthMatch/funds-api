@@ -39,7 +39,7 @@ app.use('/package', packageRoutes);
 app.use('/site-data', siteDataRoutes);
 
 // mongodb+srv://root:icui4cumise7@cluster0.3o7ko.mongodb.net/finance
-mongoose.connect('mongodb+srv://root:icui4cumise7@cluster0.3o7ko.mongodb.net/finance', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://dynatycatahoulakennel:34YWFwH9ZpaI21qp@cluster0.ya0xbse.mongodb.net/finance', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
