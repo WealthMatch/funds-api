@@ -12,10 +12,6 @@ const app = express();
 
 // app.use(cors());
 
-
-// Middleware
-// app.use(bodyParser.json());
-
 app.use(cors('*'))
 
 app.use(cors());
