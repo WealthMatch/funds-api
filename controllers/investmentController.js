@@ -12,7 +12,8 @@ exports.createInvestment = async (req, res) => {
     const { amountInvested } = req.body;
     const amountExpected = amountInvested * 1.5; // 50% increase
 
-    let pendingInvestment = await Investment.find({status: 'merged', user: req.userId });
+
+    let pendingInvestment = await Investment.find({status: { $in: ['merged','pending-merge'] }, user: req.userId });
 
     if(pendingInvestment.length > 0) {
       return res.status(500).send({message: "Complete Existing Investment"})
