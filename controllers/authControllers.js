@@ -69,6 +69,10 @@ exports.signin = async (req, res) => {
       return res.status(401).json({ message: 'Authentication failed' });
     }
 
+    if(user.status == 'Suspended') {
+      return res.status(401).json({ message: 'Account Suspended' });
+    }
+
     const passwordMatch = bcrypt.compareSync(password, user.password);
 
     if (!passwordMatch) {
