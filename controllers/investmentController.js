@@ -466,19 +466,34 @@ exports.getAdminPendingReceivePayInvestments =  async(req,res) => {
 
     const mergedReceiveFrom = [];
 
-    // Loop through userInvestments
+    // // Loop through userInvestments
+    // adminInvestments.forEach((investment) => {
+    //   // Filter objects with status other than 'done' and push into mergedReceiveFrom
+    //   investment.receiveFrom.forEach((receiveFromObj) => {
+    //     if (receiveFromObj.status !== 'done') {
+    //       mergedReceiveFrom.push(receiveFromObj);
+    //     }
+    //   });
+
+    //   // Clear investment.receiveFrom array
+    //   investment.receiveFrom = [];
+    // });
+
+        // Loop through userInvestments
     adminInvestments.forEach((investment) => {
       // Filter objects with status other than 'done' and push into mergedReceiveFrom
       investment.receiveFrom.forEach((receiveFromObj) => {
-        if (receiveFromObj.status !== 'done') {
+        if (receiveFromObj.status !== 'done' && receiveFromObj.investmentSending.status != 'pending-payment') {
           mergedReceiveFrom.push(receiveFromObj);
+   
+          // console.log('RECEIVEE  FROM OBJ: ', receiveFromObj.investmentSending);
         }
       });
 
       // Clear investment.receiveFrom array
       investment.receiveFrom = [];
     });
-
+    
     return res.status(200).json({ receives: mergedReceiveFrom });
 
   } catch (error) {
