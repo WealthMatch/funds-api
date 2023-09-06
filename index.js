@@ -19,7 +19,6 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hey API running 🥳')
-  
 })
 
 app.use("/status",(req,res) => {
@@ -36,6 +35,7 @@ app.use('/site-data', siteDataRoutes);
 mongoose.connect('mongodb+srv://dynatycatahoulakennel:34YWFwH9ZpaI21qp@cluster0.ya0xbse.mongodb.net/finance', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
+
 
 app.listen(8070, () => {
   console.log(`Server is running on port ${8070}`);
