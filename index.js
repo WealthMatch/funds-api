@@ -19,6 +19,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hey API running 🥳')
+  
 })
 
 app.use("/status",(req,res) => {
