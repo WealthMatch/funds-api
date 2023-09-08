@@ -12,7 +12,7 @@ router.post('/admin/signup', authController.adminSignup);
 
 router.post('/admin/signin', authController.adminSignin);
 
-router.get('/admin/profile', authMiddleware, authController.getAdminProfile);
+// router.get('/admin/profile', authMiddleware, authController.getAdminProfile);
 
 router.put('/profile-update', authMiddleware, authController.updateUserProfile);
 
