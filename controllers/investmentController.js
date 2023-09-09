@@ -607,7 +607,6 @@ exports.getAllAdminAccounts = async(req,res) =>  {
 }
 
 
-
 exports.unMergeAndDeleteAllUsersInvestments = async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -622,30 +621,32 @@ exports.unMergeAndDeleteAllUsersInvestments = async (req, res) => {
         // Populate the merge
         const populatedMerge = await Merge.findById(mergeId);
 
-        // Take the amount of the merge and deduct it from investmentReceiving -> mergedToReceiveAmount
-        const investmentReceiving = await Investment.findById(populatedMerge.investmentReceiving);
-        investmentReceiving.mergedToReceiveAmount -= populatedMerge.amount;
-
-        // Change investmentReceiving -> mergedToReceiveComplete to false
-        investmentReceiving.mergedToReceiveComplete = false;
-
-        // Change investmentReceiving -> status back to pending-payment
-        investmentReceiving.status = 'pending-payment';
-
-        // Remove userId from investmentReceiving -> receiveFrom array
-        const index = investmentReceiving.receiveFrom.indexOf(userId);
-        if (index !== -1) {
-          investmentReceiving.receiveFrom.splice(index, 1);
-        }
-
-        // Save the updated investmentReceiving
-        await investmentReceiving.save();
-
-        // Remove the merge from sendTo array
-        const mergeIndex = investment.sendTo.indexOf(mergeId);
-        if (mergeIndex !== -1) {
-          investment.sendTo.splice(mergeIndex, 1);
-        }
+       if(populatedMerge?.status != 'done') {
+         // Take the amount of the merge and deduct it from investmentReceiving -> mergedToReceiveAmount
+         const investmentReceiving = await Investment.findById(populatedMerge.investmentReceiving);
+         investmentReceiving.mergedToReceiveAmount -= populatedMerge.amount;
+ 
+         // Change investmentReceiving -> mergedToReceiveComplete to false
+         investmentReceiving.mergedToReceiveComplete = false;
+ 
+         // Change investmentReceiving -> status back to pending-payment
+         investmentReceiving.status = 'pending-payment';
+ 
+         // Remove userId from investmentReceiving -> receiveFrom array
+         const index = investmentReceiving.receiveFrom.indexOf(userId);
+         if (index !== -1) {
+           investmentReceiving.receiveFrom.splice(index, 1);
+         }
+ 
+         // Save the updated investmentReceiving
+         await investmentReceiving.save();
+ 
+         // Remove the merge from sendTo array
+         const mergeIndex = investment.sendTo.indexOf(mergeId);
+         if (mergeIndex !== -1) {
+           investment.sendTo.splice(mergeIndex, 1);
+         }
+       }
 
         // Save the updated investment
         await investment.save();
