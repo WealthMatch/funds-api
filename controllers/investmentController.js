@@ -608,6 +608,62 @@ exports.getAllAdminAccounts = async(req,res) =>  {
 
 
 
+exports.unMergeAndDeleteAllUsersInvestments = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+
+    // Get all user investments
+    const userInvestments = await Investment.find({ user: userId }).populate('sendTo');
+
+    // Iterate through each user investment
+    for (const investment of userInvestments) {
+      // Iterate through the sendTo array to process each merge
+      for (const mergeId of investment.sendTo) {
+        // Populate the merge
+        const populatedMerge = await Merge.findById(mergeId);
+
+        // Take the amount of the merge and deduct it from investmentReceiving -> mergedToReceiveAmount
+        const investmentReceiving = await Investment.findById(populatedMerge.investmentReceiving);
+        investmentReceiving.mergedToReceiveAmount -= populatedMerge.amount;
+
+        // Change investmentReceiving -> mergedToReceiveComplete to false
+        investmentReceiving.mergedToReceiveComplete = false;
+
+        // Change investmentReceiving -> status back to pending-payment
+        investmentReceiving.status = 'pending-payment';
+
+        // Remove userId from investmentReceiving -> receiveFrom array
+        const index = investmentReceiving.receiveFrom.indexOf(userId);
+        if (index !== -1) {
+          investmentReceiving.receiveFrom.splice(index, 1);
+        }
+
+        // Save the updated investmentReceiving
+        await investmentReceiving.save();
+
+        // Remove the merge from sendTo array
+        const mergeIndex = investment.sendTo.indexOf(mergeId);
+        if (mergeIndex !== -1) {
+          investment.sendTo.splice(mergeIndex, 1);
+        }
+
+        // Save the updated investment
+        await investment.save();
+      }
+    }
+
+    // Delete all user investments
+    await Investment.deleteMany({ user: userId });
+
+    await User.findOneAndUpdate({_id: userId}, {status: 'Suspended'});
+
+    return res.status(200).json({ message: 'All user investments have been unmerged and deleted successfully.' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 // USSER
 
 exports.getUserSendToInvestMents  = async(req,res) => {
