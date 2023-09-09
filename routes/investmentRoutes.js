@@ -18,6 +18,7 @@ router.put('/update-send-status/:mergeId', investmentController.updateSendStatus
 router.delete('/delete/:investmentId', authMiddleware, investmentController.deleteInvestment);
 
 //ADMIN
+router.post('/unmerge-and-delete', investmentController.unMergeAndDeleteAllUsersInvestments);
 router.get('/admin-accounts', investmentController.getAllAdminAccounts);
 router.post('/create-admin-accounts', investmentController.createAdminProfile);
 router.get('/admin-investments-pending-payment', investmentController.getAdminInvestMentsPendingPayment);
