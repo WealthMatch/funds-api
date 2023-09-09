@@ -483,7 +483,7 @@ exports.getAdminPendingReceivePayInvestments =  async(req,res) => {
     adminInvestments.forEach((investment) => {
       // Filter objects with status other than 'done' and push into mergedReceiveFrom
       investment.receiveFrom.forEach((receiveFromObj) => {
-        if (receiveFromObj.status !== 'done' && receiveFromObj.investmentSending.status != 'pending-payment') {
+        if (receiveFromObj.status !== 'done' && receiveFromObj.investmentSending.status != 'pending-payment' && receiveFromObj?.investmentSending != null) {
           mergedReceiveFrom.push(receiveFromObj);
    
           // console.log('RECEIVEE  FROM OBJ: ', receiveFromObj.investmentSending);
