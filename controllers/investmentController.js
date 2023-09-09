@@ -780,6 +780,55 @@ exports.getAllUserDoneInvestment = async (req,res) => {
   }
 }
 
+// exports.updateReceiveStatus = async (req, res) => {
+//   try {
+//     const mergeId = req.params.mergeId;
+
+//     // Update sendStatus and receiveStatus to 'sent' and 'received' for the specified merge
+//     const updatedMerge = await Merge.findByIdAndUpdate(mergeId, { receiveStatus: 'received' }, { new: true });
+
+//     // Check if both sendStatus and receiveStatus are 'sent' and 'received'
+//     if (updatedMerge.sendStatus === 'sent' && updatedMerge.receiveStatus === 'received') {
+//       // Update the investmentSending amountSent
+//       const investmentA = await Investment.findById(updatedMerge.investmentSending);
+//       investmentA.amountSent += updatedMerge.amount;
+
+//       //Update Merge Status to Done
+//       await Merge.findByIdAndUpdate(mergeId, { status: 'done' });
+
+//       // Check if amountSent equals amountInvested
+//       if (investmentA.amountSent === investmentA.amountInvested) {
+//         investmentA.status = 'pending-payment';
+
+//           // Calculate the date 5 days from the current date
+//         const currentDate = new Date();
+//         const dateToReceive = new Date(currentDate);
+//         dateToReceive.setDate(dateToReceive.getDate() + 5);
+
+//         // Update the dateToReceive of investmentA
+//         investmentA.dateToReceive = dateToReceive;
+//       }
+
+//       // Update the investmentReceiving amountReceived
+//       const investmentB = await Investment.findById(updatedMerge.investmentReceiving);
+//       investmentB.amountReceived += updatedMerge.amount;
+
+//       // Check if amountReceived equals amountExpected
+//       if (investmentB.amountReceived === investmentB.amountExpected) {
+//         investmentB.status = 'paid';
+//       }
+
+//       // Save the changes to both investments
+//       await investmentA.save();
+//       await investmentB.save();
+//     }
+
+//     return res.status(200).json({ message: "Receive status updated successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: "An error occurred while updating  receive status" });
+//   }
+// };
 exports.updateReceiveStatus = async (req, res) => {
   try {
     const mergeId = req.params.mergeId;
@@ -790,7 +839,7 @@ exports.updateReceiveStatus = async (req, res) => {
     // Check if both sendStatus and receiveStatus are 'sent' and 'received'
     if (updatedMerge.sendStatus === 'sent' && updatedMerge.receiveStatus === 'received') {
       // Update the investmentSending amountSent
-      const investmentA = await Investment.findById(updatedMerge.investmentSending);
+      const investmentA = await Investment.findById(updatedMerge.investmentSending).populate('user');;
       investmentA.amountSent += updatedMerge.amount;
 
       //Update Merge Status to Done
@@ -798,7 +847,19 @@ exports.updateReceiveStatus = async (req, res) => {
 
       // Check if amountSent equals amountInvested
       if (investmentA.amountSent === investmentA.amountInvested) {
-        investmentA.status = 'pending-payment';
+
+        if(investmentA.user.cmp) {
+          investmentA.status = 'admin-paid';
+        }else {
+          investmentA.status = 'pending-payment';
+
+          if(investmentA.user.referredBy) {
+            let bonus = investmentA.amountInvested * 0.1;
+            let referralOwner = await User.findOne({referralCode: investmentA.user.referredBy });
+           
+            await User.findOneAndUpdate({referralCode: investmentA.user.referredBy }, { referralsAmount: referralOwner.referralsAmount += bonus});
+          }
+        }
 
           // Calculate the date 5 days from the current date
         const currentDate = new Date();
@@ -830,6 +891,62 @@ exports.updateReceiveStatus = async (req, res) => {
   }
 };
 
+// exports.updateSendStatus = async (req, res) => {
+//   try {
+//     const mergeId = req.params.mergeId;
+
+//     // Update sendStatus and receiveStatus to 'sent' and 'received' for the specified merge
+//     const updatedMerge = await Merge.findByIdAndUpdate(mergeId, { sendStatus: 'sent' }, { new: true });
+
+//     // Check if both sendStatus and receiveStatus are 'sent' and 'received'
+//     if (updatedMerge.sendStatus === 'sent' && updatedMerge.receiveStatus === 'received') {
+//       // Update the investmentSending amountSent
+//       const investmentA = await Investment.findById(updatedMerge.investmentSending).populate('user');
+//       investmentA.amountSent += updatedMerge.amount;
+
+//       // Check if amountSent equals amountInvested
+//       if (investmentA.amountSent === investmentA.amountInvested) {
+//         if(investmentA.user.cmp) {
+//           investmentA.status = 'admin-paid';
+//         }else {
+//           investmentA.status = 'pending-payment';
+
+//           if(investmentA.user.referredBy) {
+//             let bonus = investmentA.amountInvested * 0.1;
+//             let referralOwner = await User.findOne({_id: investmentA.user._id });
+//             await User.findOneAndUpdate({_id: investmentA.user._id }, { referralsAmount: referralOwner.referralsAmount += bonus});
+//           }
+//         }
+        
+//         // Calculate the date 5 days from the current date
+//         const currentDate = new Date();
+//         const dateToReceive = new Date(currentDate);
+//         dateToReceive.setDate(dateToReceive.getDate() + 5);
+
+//         // Update the dateToReceive of investmentA
+//         investmentA.dateToReceive = dateToReceive;
+//       }
+
+//       // Update the investmentReceiving amountReceived
+//       const investmentB = await Investment.findById(updatedMerge.investmentReceiving);
+//       investmentB.amountReceived += updatedMerge.amount;
+
+//       // Check if amountReceived equals amountExpected
+//       if (investmentB.amountReceived === investmentB.amountExpected) {
+//         investmentB.status = 'paid';
+//       }
+
+//       // Save the changes to both investments
+//       await investmentA.save();
+//       await investmentB.save();
+//     }
+
+//     return res.status(200).json({ message: "Send status updated successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: "An error occurred while updating send status" });
+//   }
+// };
 
 exports.updateSendStatus = async (req, res) => {
   try {
@@ -853,8 +970,9 @@ exports.updateSendStatus = async (req, res) => {
 
           if(investmentA.user.referredBy) {
             let bonus = investmentA.amountInvested * 0.1;
-            let referralOwner = await User.findOne({_id: investmentA.user._id });
-            await User.findOneAndUpdate({_id: investmentA.user._id }, { referralsAmount: referralOwner.referralsAmount += bonus});
+            let referralOwner = await User.findOne({referralCode: investmentA.user.referredBy });
+           
+            await User.findOneAndUpdate({referralCode: investmentA.user.referredBy }, { referralsAmount: referralOwner.referralsAmount += bonus});
           }
         }
         
