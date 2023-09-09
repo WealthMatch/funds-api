@@ -268,7 +268,7 @@ exports.adminSignin = async (req, res) => {
 
     res.status(200).json({ accessToken: token, user: user });
   } catch (error) {
-    res.status(500).json({ message: 'Error signing in' });
+    res.status(500).json({ message: 'Error signing in', error: error });
   }
 };
 
