@@ -203,8 +203,10 @@ exports.getInvestmentsByPendingPayment = async (req, res) => {
         user: { $nin: adminUserIds },
         status: 'pending-payment'
       }).populate('user').populate('sendTo').populate('receiveFrom');
-  
-      return res.status(200).json({ investments: pendingPaymentInvestments });
+      
+      let filteredData = pendingPaymentInvestments.filter((data) => data.user !== null);
+
+      return res.status(200).json({ investments: filteredData });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "An error occurred while fetching pending payment investments" });
