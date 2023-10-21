@@ -351,3 +351,28 @@ function generateReferralCode() {
     }
     return referralCode;
   }
+
+
+  exports.getAllRefferalWithdrawRequests = async(req,res) => {
+    try {
+      let data = await Withdrawal.find({}).populate('user');
+
+      return res.status(200).json({data: data});
+
+    } catch (error) {
+      return res.status(500).json({message: 'Error'})
+    }
+  }
+
+  exports.paidRefferalAmount = async(req,res) => {
+    try {
+      let { withdrawalId } = req.body;
+
+      await Withdrawal.findOneAndUpdate({_id: withdrawalId},{ status: 'paid' });
+
+      return res.status(200).json({message: 'Done'});
+    } catch (error) {
+      return res.status(500).json({message: 'Error'})
+    }
+  }
+
