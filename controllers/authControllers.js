@@ -47,6 +47,12 @@ exports.signup = async (req, res) => {
 
     await newUser.save();
 
+    if(referredBy) {
+      let referredUserData = await User.findOne({referralCode: referredBy})
+
+      await User.findOneAndUpdate({referralCode: referredBy }, { totalReferrals: referredUserData.totalReferrals+= 1});
+    }
+    
     // Generate a JWT token
     const token = jwt.sign({ userId: newUser._id, email: newUser.email }, secretKey, { expiresIn: '1h' });
 
